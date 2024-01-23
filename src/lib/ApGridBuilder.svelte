@@ -1,4 +1,4 @@
-<svelte:options customElement='ap-grid-builder' />
+<svelte:options customElement="ap-grid-builder" />
 
 <script>
   export let columns = 1;
@@ -10,48 +10,67 @@
     for (let x = 0; x < rows; x++) {
       for (let y = 0; y < columns; y++) {
         blocks.push({
-          class: (x === rows - 1 || y === columns - 1) ? 'hide-dot' : '',
+          class: x === rows - 1 || y === columns - 1 ? "hide-dot" : "",
           index: x + y * x,
           x,
-          y
+          y,
         });
       }
     }
   }
+
+  function handleDragOver(event) {
+    event.preventDefault()
+  }
 </script>
 
-<div class='ap-grid-builder'>
+<div class="ap-grid-builder">
+  <div class="ap-grid-builder-panel">PANEL</div>
 
   <div
-    class='ap-grid-builder-background'
-    style={[
-      `grid-template-columns: repeat(${columns}, 1fr)`,
-      `grid-template-rows: repeat(${rows}, 1fr)`,
-    ].join(';')}
+    class="ap-grid-builder-main"
+    on:dragover={handleDragOver}
   >
-    {#each blocks as block}
-      <div class={`ap-grid-builder-block ${block.class}`} />
-    {/each}
-  </div>
+    <div
+      class="ap-grid-builder-background"
+      style={[
+        `grid-template-columns: repeat(${columns}, 1fr)`,
+        `grid-template-rows: repeat(${rows}, 1fr)`,
+      ].join(";")}
+    >
+      {#each blocks as block}
+        <div class={`ap-grid-builder-block ${block.class}`} />
+      {/each}
+    </div>
 
-  <div
-    class='ap-grid-builder-content'
-    style={[
-      `grid-template-columns: repeat(${columns}, 1fr)`,
-      `grid-template-rows: repeat(${rows}, 1fr)`,
-    ].join(';')}
-  >
-    <slot />
+    <div
+      class="ap-grid-builder-content"
+      style={[
+        `grid-template-columns: repeat(${columns}, 1fr)`,
+        `grid-template-rows: repeat(${rows}, 1fr)`,
+      ].join(";")}
+    >
+      <slot />
+    </div>
   </div>
 </div>
 
 <style>
   .ap-grid-builder {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .ap-grid-builder-panel {
+    width: 150px;
+    border: 1px solid black;
+  }
+
+  .ap-grid-builder-main {
+    flex-grow: 1;
     position: relative;
-    border: 2px solid black;
+    border: 1px solid black;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
   }
 
   .ap-grid-builder-grid {
@@ -73,11 +92,11 @@
     aspect-ratio: 1;
   }
   .ap-grid-builder-background .ap-grid-builder-block:hover {
-    background: #F8F8F8;
-    border: 1px solid #F3F3F3;
+    background: #f8f8f8;
+    border: 1px solid #f3f3f3;
   }
   .ap-grid-builder-background .ap-grid-builder-block:not(.hide-dot):after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -2px;
     right: -2px;

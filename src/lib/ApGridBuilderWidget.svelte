@@ -1,19 +1,29 @@
 <script>
-  export let width = 1
-  export let height = 1
-  export let row
-  export let column
+  export let width = 1;
+  export let height = 1;
+  export let row;
+  export let column;
 
-  export let backgroundColor = '#F5F5F5'
+  export let backgroundColor = "#F5F5F5";
+
+  function handleDragStart(event) {
+    console.log('drag')
+    event.dataTransfer.effectAllowed = "move"
+    event.dataTransfer.dropEffect = "move"
+  }
 </script>
 
 <div
-  class='ap-grid-builder-widget'
+  class="ap-grid-builder-widget"
   style={[
     `background: ${backgroundColor}`,
-    row ? `grid-row:${row}${height ? ` / span ${height}` : ''}` : '',
-    column ? `grid-column:${column}${width ? ` / span ${width}` : ''}` : ''
-  ].join(';')}
+    row ? `grid-row:${row}${height ? ` / span ${height}` : ""}` : "",
+    column ? `grid-column:${column}${width ? ` / span ${width}` : ""}` : "",
+  ].join(";")}
+  draggable="true"
+  role="gridcell"
+  tabindex="0"
+  on:dragstart={handleDragStart}
 >
   <slot />
 </div>
@@ -28,6 +38,5 @@
     cursor: pointer;
 
     box-sizing: border-box;
-
   }
 </style>
